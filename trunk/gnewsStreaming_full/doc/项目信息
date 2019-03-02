@@ -1,0 +1,28 @@
+# 将用户数据写入ES的需求说明
+
+ * 读取的appkey：p2n4n7osvqsgttuw， appkey可以指定多个
+ * 写入es 的donews_user_data index
+
+ * 每秒从Kafka中消费并写入ES
+
+ * 使用appkey+suuid作为 _id, 比如：p2n4n7osvqsgttuw_ffffffff-c8f5-0a84-ffff-ffffe92aa610
+
+ 步骤：
+ 1、使用SparkStreaming读取Kafka，Offset存储Zookeeper中
+ 2、使用模式匹配将不同Appkey放到不同ES
+ 3、封装一个ES方法，其中一个参数是appkey
+ 4、SparkSreaming的时间为1秒钟，读取一次Kafka
+ 5、使用appkey+suuid作为 _id, 比如：p2n4n7osvqsgttuw_ffffffff-c8f5-0a84-ffff-ffffe92aa610
+
+消费命令：kafka-console-consumer --topic p2n4n7osvqsgttuw --zookeeper slave01:2181,slave02:2181,slave03:2181 --from-beginning >>kafka.log
+
+数据如下：
+
+ {"app_version":"1.4.0","suuid":"00000000-7b70-ae84-57eb-28f70033c587","display":"1080x1920", "ip":"43.243.139.212","os_version":"5.1.1",
+ "channel":"xiaomi","device_type":"Redmi Note 3", "mac":" 76:23:44:AE:C2:89 ","network":"","register_days":0,"os_type":"Android","nettype":"WIFI",
+ "appkey":"p2n4n7osvqsgttuw","event":"Register","lang":"zh","timestamp":"2017-09-06T01:44:15.428Z"}
+
+ {"app_version":"1.5.0","suuid":"4C160B5F-F124-4225-A743-A1F875A2ACD6","display":"1242*2208","ip":"43.243.139.212","os_version":"10.3.3",
+ "channel":"App Store","device_type":"iPhone 6 Plus (A1522/A1524)","mac":"02:00:00:00:00:00","network":"460#00","register_days":0,  "use_interval":85,
+ "os_type":"iOS","nettype":"WIFI","appkey":"p2n4n7osvqsgttuw","event":"Startup","lang":"zh-Hans-CN", "timestamp":"2017-09-06T01:44:50.899Z"}
+

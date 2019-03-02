@@ -1,0 +1,20 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "properties": {
+    "img_location": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "img_path": {"type": "string"},
+          "img_width": {"type": "integer"},
+          "img_height": {"type": "integer"},
+          "img_src": {"type": "string"},
+          "img_index": {"type": "integer"}
+        },
+        "required": ["img_path", "img_width", "img_height", "img_src", "img_index"]
+      }
+    }
+  }
+}
